@@ -8,12 +8,12 @@ import (
 	"regexp"
 )
 
-func Search(pattern string) *list.List {
+func Search(pattern string) []string {
 
 	regex := TransformToRegEx(pattern)
 	matches := SearchInFile(regex)
 
-	return matches
+	return TransformToArray(matches)
 }
 
 func SearchInFile(regex *regexp.Regexp) *list.List {
