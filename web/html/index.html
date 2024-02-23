@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.10"
+        integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC"
+        crossorigin="anonymous"></script>
+    <title>vestigiaverbi</title>
+    <script>
+
+        document.addEventListener('alpine:initialized', () => {
+            Alpine.store('keyStore', {
+            })
+            console.log('init')
+        })
+
+        function handleKeypress(event) {
+            Alpine.store('keyStore').push(event.key)
+            console.log(Alpine.store('keyStore'))
+        }
+
+    </script>
+</head>
+
+<body x-data="{
+    presses: [],
+    push(ch) {ch.length == 1 ? this.presses.push( {ch: ch, pos: this.presses.length} ) : null},
+    pop(ch) {this.presses.pop()},
+    tr(pos) {this.presses[pos].ch.includes('?') ? this.presses[pos].ch += '?' : this.presses[pos].ch = '?'; this.presses[pos].ch.length > 5 ? this.presses[pos].ch = '?' : null},
+    getStr() {ret = ''; this.presses.forEach((element) => ret += element.ch); return ret}
+    }" @keyup='event.key == "Backspace" ? pop() : push($event.key) '>
+    <div x-data>
+        <header class="container">
+            <hgroup>
+                <h1> vestigiaverbi </h1>
+                <p> A tool! </p>
+            </hgroup>
+        </header>
+        <section x-data id="preview" class="container" @keyup='event.key == "Backspace" ? pop() : push($event.key) '>
+            <h2>Word Input</h2>
+            <p>
+                Search for words! If you are unsure about a letter just type a '?' instead!
+            </p>
+            <div x-data class="grid">
+                <template x-data x-for="ch in presses" :key="ch.pos">
+                    <button :data-tooltip="ch.pos" x-text="ch.ch" @click="tr(ch.pos)"></button>
+                </template>
+            </div>
+            <form hx-post="/query">
+                <input style="visibility: hidden;" type="text" name="query" x-model="getStr()"></label>
+                <input type="submit" value="Search" />
+            </form>
+            <div> {{ . }} </div>
+        </section>
+
+        <main class="container">
+    </div>
+</body>
+
+</html>
