@@ -29,10 +29,40 @@
 
 <body x-data="{
     presses: [],
-    push(ch) {ch.length == 1 ? this.presses.push( {ch: ch, pos: this.presses.length} ) : null},
-    pop(ch) {this.presses.pop()},
-    tr(pos) {this.presses[pos].ch.includes('?') ? this.presses[pos].ch += '?' : this.presses[pos].ch = '?'; this.presses[pos].ch.length > 5 ? this.presses[pos].ch = '?' : null},
-    getStr() {ret = ''; this.presses.forEach((element) => ret += element.ch); return ret}
+    push(ch) { 
+        this.modal == -1 ? 
+            ch.length == 1 ? 
+            this.presses.push({ ch: ch, pos: this.presses.length }) 
+            : null 
+        : null 
+    },
+    pop() { this.modal == -1 ? this.presses.pop() : null },
+    tr(pos) { 
+        this.presses[pos].ch.includes('?') ? 
+            this.presses[pos].ch += '?' 
+            : this.presses[pos].ch = '?'; 
+        this.presses[pos].ch.length > 2 ?
+            this.presses[pos].ch = '?' 
+            : null 
+    },
+    modal: -1,
+    setModal(num) { this.modal = num },
+    setOrs(pos, val) { 
+        this.presses[pos] = { 
+            ...this.presses[pos],
+            ors: val
+        };
+        this.modal = -1 
+    },
+    getStr() {
+        ret = '';
+        this.presses.forEach((el) => {
+            orsss = (el.ors !== undefined && el.ors !== null) ? el.ors : '';
+            thret = el.ch.includes('?') ? el.ch + '{' + orsss + '}' : el.ch;
+            ret += thret;
+        })
+        return ret
+    }
     }" @keyup='event.key == "Backspace" ? pop() : push($event.key) '>
     <div x-data>
         <header class="container">
@@ -41,21 +71,48 @@
                 <p> A tool! </p>
             </hgroup>
         </header>
-        <section x-data id="preview" class="container" @keyup='event.key == "Backspace" ? pop() : push($event.key) '>
+        <!--<section x-data id="preview" class="container" @keyup='event.key == "Backspace" ? pop() : push($event.key) '>-->
+        <section x-data id="preview" class="container">
             <h2>Word Input</h2>
             <p>
                 Search for words! If you are unsure about a letter just type a '?' instead!
             </p>
             <div x-data class="grid">
                 <template x-data x-for="ch in presses" :key="ch.pos">
-                    <button :data-tooltip="ch.pos" x-text="ch.ch" @click="tr(ch.pos)"></button>
+                    <div role="group">
+                        <button :data-tooltip="ch.pos" x-text="ch.ch" @click="tr(ch.pos)"></button>
+                        <button x-show="ch.ch.includes('?')" @click="setModal(ch.pos)" x-text="ch.ors || 'or'"
+                            placeholder="?">Or</button>
+                    </div>
                 </template>
             </div>
-            <form hx-post="/query">
-                <input style="visibility: hidden;" type="text" name="query" x-model="getStr()"></label>
+            <form hx-post="/query" hx-target="#results-list" hx-swap="innerHTML">
+                <input style="visibility: hidden;" type="text" name="query" x-model="getStr()">
                 <input type="submit" value="Search" />
             </form>
-            <div> {{ . }} </div>
+            <dialog open x-data="{ors: ''}" x-show="modal > -1">
+                <article>
+                    <header>
+                        <button aria-label="Close" rel="prev" @click="setModal(-1)"></button>
+                        <p>
+                            <strong> Add other Chars</strong>
+                        </p>
+                    </header>
+                    <input type="text" name="adds" :placeholder="ch.ors" aria-label="Adds" x-model="ors" />
+                    <button type="submit" value="Save" @click="() => {setOrs(modal, ors); ors='';} ">Safe</button>
+                </article>
+            </dialog>
+
+        </section>
+        <section x-data id="results" class="container">
+            <h2>Results</h2>
+            <div x-data class="grid" id="results-list">
+                {{ block "word-list-el" .}}
+                {{ range .Results }}
+                <div> {{ . }} </div>
+                {{ end }}
+                {{ end }}
+            </div>
         </section>
 
         <main class="container">
