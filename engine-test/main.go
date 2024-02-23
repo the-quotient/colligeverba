@@ -16,41 +16,37 @@ func main() {
 	pattern5 := "?{}?{}c?{l,m,n}esi?{}?{}"
 
 	fmt.Println("Test 1: pattern = " + pattern1)
-	word1 := engine.Search(pattern1)
-
-	for e := word1.Front(); e != nil; e = e.Next() {
-		fmt.Println(e.Value)
+	words1 := engine.Search(pattern1)
+	for i := range words1 {
+		fmt.Println(words1[i])
 	}
 	fmt.Println()
 
 	fmt.Println("Test 2: pattern = " + pattern2)
-	word2 := engine.Search(pattern2)
-
-	for e := word2.Front(); e != nil; e = e.Next() {
-		fmt.Println(e.Value)
+	words2 := engine.Search(pattern2)
+	for i := range words2 {
+		fmt.Println(words2[i])
 	}
 	fmt.Println()
 
 	fmt.Println("Test 3: pattern = " + pattern3)
-	word3 := engine.Search(pattern3)
-	for e := word3.Front(); e != nil; e = e.Next() {
-		fmt.Println(e.Value)
+	words3 := engine.Search(pattern3)
+	for i := range words3 {
+		fmt.Println(words3[i])
 	}
 	fmt.Println()
 
 	fmt.Println("Test 4: pattern = " + pattern4)
-	word4 := engine.Search(pattern4)
-
-	for e := word4.Front(); e != nil; e = e.Next() {
-		fmt.Println(e.Value)
+	words4 := engine.Search(pattern4)
+	for i := range words4 {
+		fmt.Println(words4[i])
 	}
 	fmt.Println()
 
 	fmt.Println("Test 5: pattern = " + pattern5)
-	word5 := engine.Search(pattern5)
-
-	for e := word5.Front(); e != nil; e = e.Next() {
-		fmt.Println(e.Value)
+	words5 := engine.Search(pattern5)
+	for i := range words5 {
+		fmt.Println(words5[i])
 	}
 	fmt.Println()
 }
