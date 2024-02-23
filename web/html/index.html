@@ -57,8 +57,12 @@
     getStr() {
         ret = '';
         this.presses.forEach((el) => {
-            orsss = (el.ors !== undefined && el.ors !== null) ? el.ors : '';
-            thret = el.ch.includes('?') ? el.ch + '{' + orsss + '}' : el.ch;
+            orsss = '' 
+            if (el.ors !== undefined && el.ors !== null) {
+                el.ors.split('').forEach( (orr) => orsss += orr+',' )
+                orsss = orsss.substring(0, orsss.length-1)
+            }
+            thret = (el.ch.includes('?') && el.ch.length == 1) ? el.ch + '{' + orsss + '}' : el.ch;
             ret += thret;
         })
         return ret

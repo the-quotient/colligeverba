@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
     "html/template"
+    "github.com/the-quotient/vestigiaverbi/engine"
 )
 
 
@@ -21,9 +22,12 @@ func getRoot(w http.ResponseWriter, r *http.Request) {
 
 func query(w http.ResponseWriter, r *http.Request) {
     rootTmpl = template.Must(template.ParseFiles("html/index.html"))
-    testData := []string{"Hallo", "WElt", "lorem", "ipsum" }
-    res := Words{Results: testData}
-    rootTmpl.ExecuteTemplate(w, "word-list-el", res)
+    query := r.FormValue("query")
+    res := engine.Search(query)
+    if len(res) > 10 {
+        res = res[:10]
+    }
+    rootTmpl.ExecuteTemplate(w, "word-list-el", Words{Results: res})
 }
 
 func main() {
