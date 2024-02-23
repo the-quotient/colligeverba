@@ -11,7 +11,7 @@ func main() {
 	// this is given by the web container to the engine
 	pattern1 := "?{}cclesia"
 	pattern2 := "?{}c?{}?{}"
-	pattern3 := "?{}?{}co"
+	pattern3 := "?{d,j}??o"
 	pattern4 := "d?{l,k,j,i}c?{a,b,h,o}"
 	pattern5 := "?{}?{}c?{l,m,n}esi?{}?{}"
 
@@ -26,6 +26,7 @@ func main() {
 		"dicimus",
 		"dicitis",
 		"dicunt",
+
 		"ecclesia",
 		"ecclesiae",
 		"eccleisae",
