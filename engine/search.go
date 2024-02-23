@@ -10,7 +10,7 @@ import (
 
 func Search(pattern string) []string {
 
-	regex := TransformToRegEx(pattern)
+	regex := TransformToRegEx("^" + pattern + "$")
 	matches := SearchInFile(regex)
 
 	return TransformToArray(matches)
