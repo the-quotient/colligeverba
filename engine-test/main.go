@@ -9,8 +9,8 @@ import (
 func main() {
 
 	// this is given by the web container to the engine
-	pattern1 := "?{}cclesia"
-	pattern2 := "?{}c?{}?{}"
+	pattern1 := "?{}ccl??si?{a,b}"
+	pattern2 := "?{}c?{}?{o,j,l}"
 	pattern3 := "?{d,j}??o"
 	pattern4 := "d?{l,k,j,i}c?{a,b,h,o}"
 	pattern5 := "?{}?{}c?{l,m,n}esi?{}?{}"
