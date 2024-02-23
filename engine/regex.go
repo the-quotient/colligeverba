@@ -9,7 +9,8 @@ func TransformToRegEx(pattern string) string {
 	step1 := strings.Replace(pattern, "?{}", ".", -1)
 	step2 := strings.Replace(step1, "?{", "[", -1)
 	step3 := strings.Replace(step2, "}", "]", -1)
+	step4 := strings.Replace(step3, "??", ".+", -1)
 
-	return step3
+	return step4
 
 }
