@@ -1,27 +1,44 @@
 package engine
 
 import (
+	"bufio"
 	"container/list"
-	"log"
+	"fmt"
+	"os"
 	"regexp"
 )
 
-func SearchForWord(pattern string, words []string) *list.List {
+func Search(pattern string) *list.List {
 
 	regex := TransformToRegEx(pattern)
+	matches := SearchInFile(regex)
+
+	return matches
+}
+
+func SearchInFile(regex *regexp.Regexp) *list.List {
+
 	matches := list.New()
 
-	for _, word := range words {
+	file, err := os.Open("../latin.txt")
+	if err != nil {
+		fmt.Println("Error:", err)
+		return nil
+	}
+	defer file.Close()
 
-		found, err := regexp.MatchString(regex, word)
+	scanner := bufio.NewScanner(file)
 
-		if err != nil {
-			log.Fatal(err)
+	for scanner.Scan() {
+		line := scanner.Text()
+
+		if regex.MatchString(line) {
+			matches.PushBack(line)
 		}
+	}
 
-		if found {
-			matches.PushBack(word)
-		}
+	if err := scanner.Err(); err != nil {
+		fmt.Println("Error:", err)
 	}
 
 	return matches
