@@ -16,7 +16,7 @@ func main() {
 	pattern5 := "?{}?{}c?{l,m,n}esi?{}?{}"
 
 	fmt.Println("Test 1: pattern = " + pattern1)
-	word1 := engine.SearchForWord(pattern1)
+	word1 := engine.Search(pattern1)
 
 	for e := word1.Front(); e != nil; e = e.Next() {
 		fmt.Println(e.Value)
@@ -24,7 +24,7 @@ func main() {
 	fmt.Println()
 
 	fmt.Println("Test 2: pattern = " + pattern2)
-	word2 := engine.SearchForWord(pattern2)
+	word2 := engine.Search(pattern2)
 
 	for e := word2.Front(); e != nil; e = e.Next() {
 		fmt.Println(e.Value)
@@ -32,14 +32,14 @@ func main() {
 	fmt.Println()
 
 	fmt.Println("Test 3: pattern = " + pattern3)
-	word3 := engine.SearchForWord(pattern3)
+	word3 := engine.Search(pattern3)
 	for e := word3.Front(); e != nil; e = e.Next() {
 		fmt.Println(e.Value)
 	}
 	fmt.Println()
 
 	fmt.Println("Test 4: pattern = " + pattern4)
-	word4 := engine.SearchForWord(pattern4)
+	word4 := engine.Search(pattern4)
 
 	for e := word4.Front(); e != nil; e = e.Next() {
 		fmt.Println(e.Value)
@@ -47,7 +47,7 @@ func main() {
 	fmt.Println()
 
 	fmt.Println("Test 5: pattern = " + pattern5)
-	word5 := engine.SearchForWord(pattern5)
+	word5 := engine.Search(pattern5)
 
 	for e := word5.Front(); e != nil; e = e.Next() {
 		fmt.Println(e.Value)
