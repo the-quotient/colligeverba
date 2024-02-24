@@ -17,7 +17,6 @@
             Alpine.store('keyStore', {
             })
             console.log('init')
-            prompt()
         })
 
         function handleKeypress(event) {
@@ -76,7 +75,6 @@
                 <p> A tool! </p>
             </hgroup>
         </header>
-        <!--<section x-data id="preview" class="container" @keyup='event.key == "Backspace" ? pop() : push($event.key) '>-->
         <section x-data id="preview" class="container">
             <h2>Word Input</h2>
             <p>
@@ -92,7 +90,7 @@
                 </template>
             </div>
             <form hx-post="/query" hx-target="#results-list" hx-swap="innerHTML">
-                <input style="visibility: hidden;" type="text" name="query" x-model="getStr()">
+                <input style="visibility: hidden;" type="hidden" name="query" x-model="getStr()">
                 <input type="submit" value="Search" />
             </form>
             <dialog open x-data="{ors: ''}" x-show="modal > -1">
