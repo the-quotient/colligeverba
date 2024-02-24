@@ -5,7 +5,6 @@ import (
 	"container/list"
 	"embed"
 	"fmt"
-	//"os"
 	"regexp"
 )
 
@@ -16,8 +15,17 @@ var (
 
 func Search(pattern string) []string {
 
+	if !InputValidation(pattern) {
+		errorMessage := []string{"Invalid input"}
+		return errorMessage[:]
+	}
+
 	regex := TransformToRegEx("^" + pattern + "$")
 	matches := SearchInFile(regex)
+
+	if matches.Len() == 0 {
+		return []string{}
+	}
 
 	return TransformToArray(matches)
 }
@@ -25,12 +33,14 @@ func Search(pattern string) []string {
 func SearchInFile(regex *regexp.Regexp) *list.List {
 
 	matches := list.New()
+	errorMessage := list.New()
 
 	//file, err := os.Open("../latin.txt")
 	file, err := content.Open("assets/latin.txt")
 	if err != nil {
 		fmt.Println("Error:", err)
-		return nil
+		errorMessage.PushBack("Error: Problem opening the file")
+		return errorMessage
 	}
 	defer file.Close()
 
@@ -46,7 +56,24 @@ func SearchInFile(regex *regexp.Regexp) *list.List {
 
 	if err := scanner.Err(); err != nil {
 		fmt.Println("Error:", err)
+		errorMessage.PushBack("Error: Problem reading the file")
+		return errorMessage
 	}
 
 	return matches
+}
+
+func InputValidation(pattern string) bool {
+
+	if len(pattern) == 0 {
+		return false
+	}
+
+	regex := regexp.MustCompile("^([a-zA-Z]+|(\\?{})+|(\\?{([a-zA-Z],)+|[a-zA-Z]+})+|(\\?\\?)+)+$")
+
+	if !regex.MatchString(pattern) {
+		return false
+	}
+
+	return true
 }
