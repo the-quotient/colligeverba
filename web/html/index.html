@@ -29,14 +29,21 @@
 
 <body x-data="{
     presses: [],
+    str: '',
     push(ch) { 
         this.modal == -1 ? 
             ch.length == 1 ? 
             this.presses.push({ ch: ch, pos: this.presses.length }) 
             : null 
-        : null 
+        : null
+        this.str = this.getStr()
     },
-    pop() { this.modal == -1 ? this.presses.pop() : null },
+    pop() { 
+        this.modal == -1 ?
+            this.presses.pop()
+            : null
+        this.str = this.getStr()
+    },
     tr(pos) { 
         this.presses[pos].ch.includes('?') ? 
             this.presses[pos].ch += '?' 
@@ -44,6 +51,7 @@
         this.presses[pos].ch.length > 2 ?
             this.presses[pos].ch = '?' 
             : null 
+        this.str = this.getStr()
     },
     modal: -1,
     setModal(num) { this.modal = num },
@@ -52,7 +60,8 @@
             ...this.presses[pos],
             ors: val
         };
-        this.modal = -1 
+        this.modal = -1
+        this.str = this.getStr()
     },
     getStr() {
         ret = '';
@@ -67,7 +76,7 @@
         })
         return ret
     }
-    }" @keyup='event.key == "Backspace" ? pop() : push($event.key) '>
+    }">
     <div x-data>
         <header class="container">
             <hgroup>
@@ -90,7 +99,7 @@
                 </template>
             </div>
             <form  hx-post="/query" hx-target="#results-list" hx-swap="innerHTML" x-data="{ isMobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) }">
-                <input :type="isMobile ? text : hidden" name="query" x-model="getStr()">
+                <input name="query" x-model="str" x-on:input="str.length > getStr().length ? push(str.slice(-1)) : pop()" >
                 <input type="submit" value="Search" />
             </form>
             <dialog open x-data="{ors: ''}" x-show="modal > -1">
