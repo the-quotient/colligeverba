@@ -2,10 +2,12 @@ package main
 
 import (
 	"embed"
-	"github.com/the-quotient/vestigiaverbi/engine"
 	"html/template"
 	"log"
 	"net/http"
+	"strings"
+
+	"github.com/the-quotient/vestigiaverbi/engine"
 )
 
 var (
@@ -36,7 +38,7 @@ func query(w http.ResponseWriter, r *http.Request) {
     rootTmpl = template.Must(template.ParseFS(content, "html/index.html"))
 	query := r.FormValue("query")
     log.Printf("Query %s \n", query)
-	res := engine.Search(query)
+	res := engine.Search(strings.ToLower(query))
     log.Printf("The result has length: %d", len(res))
 	if len(res) > 10 {
 		res = res[:10]
