@@ -73,9 +73,5 @@ func InputValidation(pattern string) bool {
 		regexp.MustCompile("^([a-zA-Z]+|(\\?{})+" +
 			"|(\\?{([a-zA-Z],)+|[a-zA-Z]+})+|(\\?\\?)+)+$")
 
-	if !regex.MatchString(pattern) {
-		return false
-	}
-
-	return true
+	return regex.MatchString(pattern)
 }
