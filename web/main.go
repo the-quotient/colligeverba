@@ -22,15 +22,15 @@ type Words struct {
 func getRoot(w http.ResponseWriter, r *http.Request) {
 	log.Printf("got / request\n")
     rootTmpl = template.Must(template.ParseFS(content, "html/index.html"))
-	//rootTmpl = template.Must(template.ParseFiles("html/index.html"))
 	rootTmpl.Execute(w, r.UserAgent())
 }
 
 func query(w http.ResponseWriter, r *http.Request) {
-	//rootTmpl = template.Must(template.ParseFiles("html/index.html"))
     rootTmpl = template.Must(template.ParseFS(content, "html/index.html"))
 	query := r.FormValue("query")
+    log.Printf("Query %s \n", query)
 	res := engine.Search(query)
+    log.Printf("The result has length: %d", len(res))
 	if len(res) > 10 {
 		res = res[:10]
 	}
