@@ -3,9 +3,15 @@ package engine
 import (
 	"bufio"
 	"container/list"
+	"embed"
 	"fmt"
-	"os"
+	//"os"
 	"regexp"
+)
+
+var (
+	//go:embed assets/*
+	content embed.FS
 )
 
 func Search(pattern string) []string {
@@ -20,7 +26,8 @@ func SearchInFile(regex *regexp.Regexp) *list.List {
 
 	matches := list.New()
 
-	file, err := os.Open("../latin.txt")
+	//file, err := os.Open("../latin.txt")
+	file, err := content.Open("assets/latin.txt")
 	if err != nil {
 		fmt.Println("Error:", err)
 		return nil
