@@ -77,59 +77,68 @@
         return ret
     }
     }">
-    <div x-data>
-        <header class="container">
-            <hgroup>
-                <h1> vestigiaverbi </h1>
-                <p> A tool! </p>
-            </hgroup>
-        </header>
-        <section x-data id="preview" class="container">
-            <h2>Word Input</h2>
-            <p>
-                Search for words! If you are unsure about a letter just type a '?' instead!
-            </p>
-            <div x-data class="grid">
-                <template x-data x-for="ch in presses" :key="ch.pos">
-                    <div role="group">
-                        <button :data-tooltip="ch.pos" x-text="ch.ch" @click="tr(ch.pos)"></button>
-                        <button x-show="ch.ch.includes('?')" @click="setModal(ch.pos)" x-text="ch.ors || 'or'"
-                            placeholder="?">Or</button>
-                    </div>
-                </template>
-            </div>
-            <form hx-post="/query" hx-target="#results-list" hx-swap="innerHTML" x-data>
-                <input name="query" x-model="str"
-                    x-on:input="str.length > getStr().length ? push(str.slice(-1)) : pop()">
-                <input type="submit" value="Search" />
-            </form>
-            <dialog open x-data="{ors: ''}" x-show="modal > -1">
-                <article>
-                    <header>
-                        <button aria-label="Close" rel="prev" @click="setModal(-1)"></button>
-                        <p>
-                            <strong> Add other Chars</strong>
-                        </p>
-                    </header>
-                    <input type="text" name="adds" :placeholder="ch.ors" aria-label="Adds" x-model="ors" />
-                    <button type="submit" value="Save" @click="() => {setOrs(modal, ors); ors='';} ">Safe</button>
-                </article>
-            </dialog>
+    <header class="container">
+        <hgroup>
+            <h1> vestigiaverbi </h1>
+            <p> A tool! </p>
+        </hgroup>
+    </header>
+    <section x-data id="preview" class="container">
+        <h2>Word Input</h2>
+        <p>
+            Search for words! If you are unsure about a letter just type a '?' instead!
+        </p>
+        <div x-data class="grid">
+            <template x-data x-for="ch in presses" :key="ch.pos">
+                <div role="group">
+                    <button :data-tooltip="ch.pos" x-text="ch.ch" @click="tr(ch.pos)"></button>
+                    <button x-show="ch.ch.includes('?')" @click="setModal(ch.pos)" x-text="ch.ors || 'or'"
+                        placeholder="?">Or</button>
+                </div>
+            </template>
+        </div>
+        <form hx-post="/query" hx-target="#results-list" hx-swap="innerHTML" x-data>
+            <input name="query" x-model="str" x-on:input="str.length > getStr().length ? push(str.slice(-1)) : pop()">
+            <input type="submit" value="Search" />
+        </form>
+        <dialog open x-data="{ors: ''}" x-show="modal > -1">
+            <article>
+                <header>
+                    <button aria-label="Close" rel="prev" @click="setModal(-1)"></button>
+                    <p>
+                        <strong> Add other Chars</strong>
+                    </p>
+                </header>
+                <input type="text" name="adds" :placeholder="ch.ors" aria-label="Adds" x-model="ors" />
+                <button type="submit" value="Save" @click="() => {setOrs(modal, ors); ors='';} ">Safe</button>
+            </article>
+        </dialog>
 
-        </section>
-        <section x-data id="results" class="container">
-            <h2>Results</h2>
-            <div x-data class="grid" id="results-list">
-                {{ block "word-list-el" .}}
-                {{ range .Results }}
-                <div> {{ . }} </div>
-                {{ end }}
-                {{ end }}
-            </div>
-        </section>
+    </section>
+    <section x-data="{info: false, switchInfo() { this.info ? this.info = false : this.info = true } }" id="results"
+        class="container">
+        <h2>Results</h2>
+        <dialog open x-data x-show="info" id="infomodal">
+            <article>
+                <header>
+                    <button aria-label="Close" rel="prev" @click="() => (info = false)"></button>
+                    <p>
+                        <strong> Nothing </strong>
+                    </p>
+                </header>
+            </article>
+        </dialog>
+        <div x-data class="grid" id="results-list">
+            {{ block "word-list-el" .}}
+            {{ range .Results }}
+            <button type="submit" class="outline secondary" value="{{ . }}" hx-post="/wordinfo/{{.}}"
+                hx-target="#infomodal" hx-swap="innerHTML" @click="switchInfo()">{{ . }}</button>
+            <!--<div @click="switchInfo()"> {{ . }} </div>-->
+            {{ end }}
+            {{ end }}
+        </div>
+    </section>
 
-        <main class="container">
-    </div>
 </body>
 
 </html>

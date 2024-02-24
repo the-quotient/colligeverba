@@ -1,0 +1,25 @@
+<article>
+    <header>
+        <button aria-label="Close" rel="prev" @click="() => (info = false)"></button>
+        <p>
+            <strong> {{ .Word }} </strong>
+        </p>
+    </header>
+    <p> <strong> Form: </strong> {{ .BasicForm }} </p>
+    <p>
+        <strong> Meanings 🇩🇪</strong>
+    <ul>
+        {{ range .Meanings }}
+        <li> {{ . }} </li>
+        {{ end }}
+    </ul>
+    </p>
+    <p>
+        <strong> Form Analysis </strong>
+    <ul>
+        {{ range .FormAnalysis }}
+        <li>{{ . }}</li>
+        {{ end }}
+    </ul>
+    </p>
+</article>

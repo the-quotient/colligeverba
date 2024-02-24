@@ -19,6 +19,13 @@ type Words struct {
 	Results []string
 }
 
+type WordInfo struct {
+    Word string
+    BasicForm string
+    Meanings []string
+    FormAnalysis []string
+}
+
 func getRoot(w http.ResponseWriter, r *http.Request) {
 	log.Printf("got / request\n")
     rootTmpl = template.Must(template.ParseFS(content, "html/index.html"))
@@ -37,9 +44,24 @@ func query(w http.ResponseWriter, r *http.Request) {
 	rootTmpl.ExecuteTemplate(w, "word-list-el", Words{Results: res})
 }
 
+func wordInfo(w http.ResponseWriter, r *http.Request) {
+    infoTmpl := template.Must(template.ParseFS(content, "html/modal.html"))
+    word := r.PathValue("word")
+    log.Println("/wordinfo for: ", word)
+    bf, m, fa := engine.GetInformation(word)
+    winfo := WordInfo{
+        Word: word,
+        BasicForm: bf,
+        Meanings: m,
+        FormAnalysis: fa,
+    }
+    infoTmpl.Execute(w, winfo)
+}
+
 func main() {
+    http.HandleFunc("POST /wordinfo/{word}", wordInfo)
+    http.HandleFunc("/query", query)
 	http.HandleFunc("/", getRoot)
-	http.HandleFunc("/query", query)
 
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
