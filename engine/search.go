@@ -23,10 +23,6 @@ func Search(pattern string) []string {
 	regex := TransformToRegEx("^" + pattern + "$")
 	matches := SearchInFile(regex)
 
-	if matches.Len() == 0 {
-		return []string{}
-	}
-
 	return TransformToArray(matches)
 }
 
@@ -57,6 +53,11 @@ func SearchInFile(regex *regexp.Regexp) *list.List {
 	if err := scanner.Err(); err != nil {
 		fmt.Println("Error:", err)
 		errorMessage.PushBack("Error: Problem reading the file")
+		return errorMessage
+	}
+
+	if matches.Len() == 0 {
+		errorMessage.PushBack("No matches found")
 		return errorMessage
 	}
 
