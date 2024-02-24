@@ -31,7 +31,6 @@ func SearchInFile(regex *regexp.Regexp) *list.List {
 	matches := list.New()
 	errorMessage := list.New()
 
-	//file, err := os.Open("../latin.txt")
 	file, err := content.Open("assets/latin.txt")
 	if err != nil {
 		fmt.Println("Error:", err)
@@ -70,7 +69,9 @@ func InputValidation(pattern string) bool {
 		return false
 	}
 
-	regex := regexp.MustCompile("^([a-zA-Z]+|(\\?{})+|(\\?{([a-zA-Z],)+|[a-zA-Z]+})+|(\\?\\?)+)+$")
+	regex :=
+		regexp.MustCompile("^([a-zA-Z]+|(\\?{})+" +
+			"|(\\?{([a-zA-Z],)+|[a-zA-Z]+})+|(\\?\\?)+)+$")
 
 	if !regex.MatchString(pattern) {
 		return false
