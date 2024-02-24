@@ -14,6 +14,8 @@ func main() {
 	pattern3 := "?{d,j}??o"
 	pattern4 := "d?{l,k,j,i}c?{a,b,h,o}"
 	pattern5 := "?{}?{}c?{l,m,n}esi?{}?{}"
+	pattern6 := "?{d,j}??.o"
+	pattern7 := ""
 
 	fmt.Println("Test 1: pattern = " + pattern1)
 	words1 := engine.Search(pattern1)
@@ -47,6 +49,20 @@ func main() {
 	words5 := engine.Search(pattern5)
 	for i := range words5 {
 		fmt.Println(words5[i])
+	}
+	fmt.Println()
+
+	fmt.Println("Test 6: pattern = " + pattern6)
+	words6 := engine.Search(pattern6)
+	for i := range words6 {
+		fmt.Println(words6[i])
+	}
+	fmt.Println()
+
+	fmt.Println("Test 7: pattern = " + pattern7)
+	words7 := engine.Search(pattern7)
+	for i := range words7 {
+		fmt.Println(words7[i])
 	}
 	fmt.Println()
 }
