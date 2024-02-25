@@ -1,6 +1,6 @@
 # ColligeVerba
 
-ColligeVerba is a simple and blazingly fast Online-Tool that assists you while transcribing handwritten latin source texts searching latin word forms using Regular Expressions. Visit cv.jn2p.de and try it. 
+ColligeVerba is a simple and blazingly fast Online-Tool that assists you while transcribing handwritten latin source texts searching latin word forms using Regular Expressions. Visit [cv.jn2p.de](https://cv.jn2p.de) and try it. 
 
 ## When to Use It 
 
@@ -8,7 +8,7 @@ Transcribing handwritten latin source texts you may encounter words that are ver
 
 ## How to Use It 
 
-Vist vc.jn2p.de. You can enter the letters that you can read and mark the others with a question mark. If you have a suggestions for the missing letters, you can add several candidates for the question marks. The tool then returns words and also inflected forms that match the entered pattern. 
+Vist [cv.jn2p.de](https://cv.jn2p.de). You can enter the letters that you can read and mark the others with a question mark. If you have a suggestions for the missing letters, you can add several candidates for the question marks. The tool then returns words and also inflected forms that match the entered pattern. 
 
 If at any point you are unsure whether a sign represents one or two letters you tell this to the program with two question marks.
 
