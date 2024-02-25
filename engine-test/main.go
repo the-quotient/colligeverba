@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/the-quotient/vestigiaverbi/engine"
+	"github.com/the-quotient/colligeverba/engine"
 )
 
 func main() {
