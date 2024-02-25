@@ -18,7 +18,7 @@ In order to accelerate the process of checking wether a form makes sense in the 
 
 ### Engine 
 
-The engine (implemented in Go) builds a regular expression from your input and matches it against a list of latin word forms. 
+The engine (implemented in Go) builds a regular expression from your input and matches it against a list of latin word forms. The form analysis and translation suggestions is powered by [latein.me](https://latein.me)
 
 ### Form list 
 
