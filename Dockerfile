@@ -7,6 +7,7 @@ WORKDIR /app
 
 # Download Go modules
 COPY go.mod ./
+COPY go.sum ./
 RUN go mod download
 
 # Copy the source code. Note the slash at the end, as explained in
@@ -14,6 +15,7 @@ RUN go mod download
 
 COPY web/ ./web/
 COPY engine/ ./engine/
+COPY db/ ./db/
 
 RUN ls
 RUN ls web/
