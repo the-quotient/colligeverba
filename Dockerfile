@@ -17,9 +17,7 @@ COPY web/ ./web/
 COPY engine/ ./engine/
 COPY db/ ./db/
 
-RUN ls
-RUN ls web/
-RUN pwd
+RUN mkdir /data
 
 # Build
 RUN go build -o /vv web/main.go
