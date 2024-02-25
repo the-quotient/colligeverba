@@ -12,7 +12,7 @@ Vist [cv.jn2p.de](https://cv.jn2p.de). You can enter the letters that you can re
 
 If at any point you are unsure whether a sign represents one or two letters you tell this to the program with two question marks.
 
-In order to accelerate the process of checking wether a form makes sense in the context of the source, the tool also provides some translation suggestions and a form analysis powered by latin.me. 
+In order to accelerate the process of checking wether a form makes sense in the context of the source, the tool also provides some translation suggestions and a form analysis powered by [latein.me](https://latein.me). 
 
 ## Remarks on the Implementation
 
@@ -22,7 +22,7 @@ The engine (implemented in Go) builds a regular expression from your input and m
 
 ### Form list 
 
-The basic form list is extracted from a spell check dictionary for LibreOffice. Currently, we work on expanding this list with the forms of the Tesserae project corpus and common spelling deviation of Medieval and Early Modern (Ecclesiastical) Latin. 
+The basic form list is extracted from a spell check dictionary for Vim. Currently, we are working on expanding this list with the forms of the [Classical Language Toolkit](https://github.com/cltk) project corpus and common spelling deviation of Medieval and Early Modern (Ecclesiastical) Latin. 
 
 ### Web Interface  
 
