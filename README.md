@@ -22,7 +22,7 @@ The engine (implemented in Go) builds a regular expression from your input and m
 
 ### Form list 
 
-The basic form list is extracted from a spell check dictionary for Vim. Currently, we are working on expanding this list with the forms of the [Classical Language Toolkit](https://github.com/cltk) project corpus and common spelling deviation of Medieval and Early Modern (Ecclesiastical) Latin. 
+The basic form list is extracted from a spell check dictionary for Vim (ca. 890,000 forms). We expanded this list with the forms of the [Classical Language Toolkit](https://github.com/cltk) project corpus (now ca. 1,098,000 forms). Currently, we are working on expanding the list further with common spelling deviation of Medieval and Early Modern (Ecclesiastical) Latin. 
 
 ### Web Interface  
 
