@@ -58,7 +58,7 @@
     setOrs(pos, val) { 
         this.presses[pos] = { 
             ...this.presses[pos],
-            ors: val
+            ors: val.replace(/[^A-Za-z]/g, '')
         };
         this.modal = -1
         this.str = this.getStr()
