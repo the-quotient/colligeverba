@@ -8,8 +8,8 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/the-quotient/vestigiaverbi/db"
-	"github.com/the-quotient/vestigiaverbi/engine"
+	"github.com/the-quotient/colligeverba/db"
+	"github.com/the-quotient/colligeverba/engine"
 )
 
 var (
