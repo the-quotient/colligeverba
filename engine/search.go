@@ -13,6 +13,10 @@ var (
 	content embed.FS
 )
 
+/*
+* This function takes a pattern as an argument and returns the words that
+* match the pattern.
+ */
 func Search(pattern string) []string {
 
 	if !InputValidation(pattern) {
