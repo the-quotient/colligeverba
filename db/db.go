@@ -22,7 +22,7 @@ func CloseDb(db *sql.DB) {
 func InitDb() *sql.DB {
 	var gdb *sql.DB
 	// Open a connection to the SQLite database
-	gdb, err := sql.Open("sqlite3", "db.db")
+	gdb, err := sql.Open("sqlite3", "/data/db.db")
 	if err != nil {
 		panic(err)
 	}
