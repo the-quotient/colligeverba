@@ -77,20 +77,125 @@
     <header class="container">
         <hgroup>
             <h1> ColligeVerba </h1>
-            <p> A (blazingly 🔥fast 🚀) tool!</p>
+            <p>Bridging the gap between transcription and dictionary lookup by searching with the letters you can read.</p>
         </hgroup>
     </header>
 
     <section x-data id="preview" class="container">
         <form hx-post="/query" hx-target="#results-list" hx-swap="innerHTML" 
-              x-data="{ language: 'latin', stage: 'all', dictionary: 'default' }">
+              x-data="{ 
+                  language: 'latin', // Defaulted to Latin initially
+                  stage: 'all', 
+                  dictionary: 'default',  // Defaulted to 'default' for Latin
+                  groupedDictionaries: [],
+                  
+                  // Defines the categories and which dictionary sigles belong to them
+                  categories: [
+                      { label: 'Enzyklopädien / Konversationslexika', sigles: ['kruenitz', 'meyers', 'herder', 'hederich', 'lml'] },
+                      { label: 'Wörterbücher zur Sprachgeschichte', sigles: ['dwb2', 'dwb', 'drw', 'idiotikon'] },
+                      { label: 'Althochdeutsch', sigles: ['splett', 'awb', 'sehrt'] },
+                      { label: 'Mittelhochdeutsch', sigles: ['mwb', 'lexer', 'lexern', 'bmz', 'findeb', 'mhdbdb'] },
+                      { label: 'Mittelniederdeutsch', sigles: ['mnwb', 'lw'] },
+                      { label: 'Frühneuhochdeutsch', sigles: ['fwb'] },
+                      { label: 'Goethe-Zeit', sigles: ['gwb', 'adelung', 'campe'] },
+                      { label: 'Neuhochdeutsch & Gegenwartssprache', sigles: ['dwdswb', 'wdg', 'etymwb'] },
+                      { label: 'Mittellateinisch', sigles: ['mlw'] },
+                      { label: 'Regionalsprachliche Wörterbücher', sigles: ['elswb', 'lothwb', 'pfwb', 'rhwb', 'rhwbn', 'wwb', 'meckwb', 'meckwbn', 'lwb', 'wlm', 'llu', 'shw', 'rede', 'sbwb'] },
+                      { label: 'Spezialwörterbücher', sigles: ['dfd', 'wdw', 'wander', 'rdwb1', 'rdwb2', 'filoslov', 'ldwb1', 'ldwb2', 'dkwb', 'cedt'] }
+                  ],
+
+                  // Maps the raw API sigles to readable names
+                  dictNames: {
+                      'kruenitz': 'Oekonomische Encyklopaedie von Johann Georg Krünitz',
+                      'meyers': 'Meyers Großes Konversationslexikon',
+                      'herder': 'Herders Conversations-Lexikon',
+                      'hederich': 'Gründliches mythologisches Lexikon von Benjamin Hederich',
+                      'lml': 'Lexicon musicum Latinum medii aevi',
+                      'dwb2': 'Deutsches Wörterbuch von Jacob Grimm und Wilhelm Grimm / Neubearbeitung',
+                      'dwb': 'Deutsches Wörterbuch von Jacob Grimm und Wilhelm Grimm',
+                      'drw': 'Deutsches Rechtswörterbuch',
+                      'idiotikon': 'Schweizerisches Idiotikon / Wörterbuch der schweizerdeutschen Sprache',
+                      'splett': 'Jochen Splett, Althochdeutsches Wörterbuch',
+                      'awb': 'Althochdeutsches Wörterbuch',
+                      'sehrt': 'Sehrt, Althochdeutsches Wörterbuch',
+                      'mwb': 'Mittelhochdeutsches Wörterbuch',
+                      'lexer': 'Mittelhochdeutsches Handwörterbuch von Matthias Lexer',
+                      'lexern': 'Nachträge zum Mittelhochdeutschen Handwörterbuch von Matthias Lexer',
+                      'bmz': 'Mittelhochdeutsches Wörterbuch von Benecke, Müller, Zarncke',
+                      'findeb': 'Findebuch zum mittelhochdeutschen Wortschatz',
+                      'mhdbdb': 'Mittelhochdeutsche Begriffsdatenbank',
+                      'mnwb': 'Mittelniederdeutsches Wörterbuch',
+                      'lw': 'Mittelniederdeutsches Handwörterbuch von August Lübben und Christoph Walther',
+                      'fwb': 'Frühneuhochdeutsches Wörterbuch',
+                      'gwb': 'Goethe-Wörterbuch',
+                      'adelung': 'Grammatisch-Kritisches Wörterbuch der Hochdeutschen Mundart (Adelung)',
+                      'campe': 'Wörterbuch der Deutschen Sprache (Campe)',
+                      'dwdswb': 'DWDS-Wörterbuch',
+                      'wdg': 'Wörterbuch der deutschen Gegenwartssprache',
+                      'etymwb': 'Etymologisches Wörterbuch des Deutschen',
+                      'mlw': 'Mittellateinisches Wörterbuch',
+                      'elswb': 'Wörterbuch der elsässischen Mundarten',
+                      'lothwb': 'Wörterbuch der deutsch-lothringischen Mundarten',
+                      'pfwb': 'Pfälzisches Wörterbuch',
+                      'rhwb': 'Rheinisches Wörterbuch',
+                      'rhwbn': 'Nachträge zum Rheinischen Wörterbuch',
+                      'wwb': 'Westfälisches Wörterbuch',
+                      'meckwb': 'Mecklenburgisches Wörterbuch',
+                      'meckwbn': 'Nachträge zum Mecklenburgischen Wörterbuch',
+                      'lwb': 'Luxemburger Wörterbuch',
+                      'wlm': 'Wörterbuch der Luxemburgischen Mundart',
+                      'llu': 'Lexikon der Luxemburger Umgangssprache',
+                      'shw': 'Südhessisches Wörterbuch',
+                      'rede': 'Regionalsprache.de',
+                      'sbwb': 'Schwäbisches Wörterbuch',
+                      'dfd': 'Digitales Familiennamenwörterbuch Deutschlands',
+                      'wdw': 'Wörterbuch der deutschen Winzersprache',
+                      'wander': 'Deutsches Sprichwörter-Lexicon von Karl Friedrich Wilhelm Wander',
+                      'rdwb1': 'Wörterbuch der russisch-deutschen Übersetzungsschwierigkeiten (Teil 1)',
+                      'rdwb2': 'Wörterbuch der russisch-deutschen Übersetzungsschwierigkeiten (Teil 2)',
+                      'filoslov': 'Deutsch-russisches Online-Wörterbuch philologischer Termini',
+                      'ldwb1': 'Dizionar Ladin Deutsch (Mischí)',
+                      'ldwb2': 'Dizionar Deutsch Ladin (Mischí)',
+                      'dkwb': 'Deutsches Kolonial-Lexikon',
+                      'cedt': 'A Comprehensive Etymological Dictionary of the English Language'
+                  },
+
+                  async init() {
+                      try {
+                          const response = await fetch('https://api.woerterbuchnetz.de/open-api/dictionaries');
+                          const data = await response.json();
+                          
+                          if (data && data.result_set) {
+                              let processedSigles = new Set();
+                              
+                              // Group the dictionaries that match our predefined categories
+                              let builtGroups = this.categories.map(cat => {
+                                  let dictsInCat = data.result_set.filter(d => cat.sigles.includes(d.sigle.toLowerCase()));
+                                  dictsInCat.forEach(d => processedSigles.add(d.sigle.toLowerCase()));
+                                  return { label: cat.label, dicts: dictsInCat };
+                              }).filter(cat => cat.dicts.length > 0); // Drop empty categories
+                              
+                              // Fallback for new API dictionaries not mapped in categories
+                              let uncategorized = data.result_set.filter(d => !processedSigles.has(d.sigle.toLowerCase()));
+                              if (uncategorized.length > 0) {
+                                  builtGroups.push({ label: 'Weitere Wörterbücher', dicts: uncategorized });
+                              }
+                              
+                              this.groupedDictionaries = builtGroups;
+                          }
+                      } catch (error) {
+                          console.error('API Error:', error);
+                      }
+                  }
+              }">
 
             <h2>Settings</h2>
             <div class="grid">
                 <div>
                     <label for="language">Language</label>
+                    <!-- Fix: Exact uppercase 'DWB' so it perfectly matches the generated <option> value -->
                     <select name="language" aria-label="Language" x-model="language" 
-                            @change="dictionary = (language === 'german' ? 'grimm' : 'default'); stage = 'all'">
+                            @change="dictionary = (language === 'german' ? 'DWB' : 'default'); stage = 'all'">
                         <option value="latin">Latin</option>
                         <option value="german">German</option>
                     </select>
@@ -103,13 +208,25 @@
                 </div>
                 <div>
                     <label for="dictionary">Dictionary</label>
-                    <select name="dictionary" aria-label="Dictionary" x-model="dictionary">
+                    <select name="dictionary" id="dictionary" aria-label="Dictionary" x-model="dictionary">
+                        
                         <template x-if="language === 'latin'">
                             <option value="default">Default</option>
                         </template>
-                        <template x-if="language === 'german'">
-                            <option value="grimm">Grimmsches Wörterbuch</option>
+                        
+                        <!-- Loops over our groups to create <optgroup> clusters -->
+                        <template x-for="group in (language === 'german' ? groupedDictionaries : [])" :key="group.label">
+                            <optgroup :label="group.label">
+                                <!-- Loops over the dictionaries inside each specific cluster -->
+                                <template x-for="dict in group.dicts" :key="dict.sigle">
+                                    <option
+                                        :value="dict.sigle" 
+                                        x-text="dictNames[dict.sigle.toLowerCase()] || dict.sigle.toUpperCase()">
+                                    </option>
+                                </template>
+                            </optgroup>
                         </template>
+
                     </select>
                 </div>
             </div>
@@ -152,10 +269,35 @@
         </dialog>
 
     </section>
-    <section x-data="{info: false, switchInfo() { this.info ? this.info = false : this.info = true } }" id="results"
-        class="container">
+    
+    <section x-data="{
+            info: false, 
+            switchInfo() { this.info = !this.info },
+            
+            // Logic to handle button clicks based on the selected language and dictionary
+            handleWordClick(event, word) {
+                // We need to access the 'language' and 'dictionary' states from the parent scope (the form)
+                const lang = document.querySelector('select[name=language]').value;
+                const dict = document.querySelector('select[name=dictionary]').value;
+                
+                if (lang === 'german') {
+                    // Prevent the HTMX request
+                    event.preventDefault(); 
+                    event.stopPropagation();
+                    
+                    // Open the Wörterbuchnetz URL in a new tab
+                    const url = `https://woerterbuchnetz.de/?sigle=${dict}&lemma=${encodeURIComponent(word)}`;
+                    window.open(url, '_blank');
+                } else {
+                    // Let HTMX handle the request to Latein.me, but open our info modal
+                    this.switchInfo();
+                }
+            }
+        }" id="results" class="container">
+        
         <h2>Results</h2>
-        <dialog open x-data x-show="info" id="infomodal">
+        
+        <dialog open x-show="info" id="infomodal">
             <article>
                 <header>
                     <button aria-label="Close" rel="prev" @click="() => (info = false)"></button>
@@ -165,11 +307,22 @@
                 </header>
             </article>
         </dialog>
-        <div x-data class="grid" id="results-list">
+        
+        <!-- Changed from class="grid" to Flexbox for auto-width and wrapping -->
+        <div id="results-list" style="display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: flex-start;">
             {{ block "word-list-el" .}}
             {{ range .Results }}
-            <button type="submit" class="outline secondary" value="{{ . }}" hx-post="/wordinfo/{{.}}"
-                hx-target="#infomodal" hx-swap="innerHTML" @click="switchInfo()">{{ . }}</button>
+            <!-- Removed type="submit", added width: auto -->
+            <button type="button" 
+                    class="outline secondary" 
+                    value="{{ . }}" 
+                    style="width: auto; margin-bottom: 0;"
+                    hx-post="/wordinfo/{{.}}"
+                    hx-target="#infomodal" 
+                    hx-swap="innerHTML" 
+                    @click="handleWordClick($event, '{{ . }}')">
+                {{ . }}
+            </button>
             {{ end }}
             {{ end }}
         </div>

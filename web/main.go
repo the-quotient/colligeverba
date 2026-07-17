@@ -35,9 +35,14 @@ func getRoot(w http.ResponseWriter, r *http.Request) {
 
 func query(w http.ResponseWriter, r *http.Request) {
     rootTmpl = template.Must(template.ParseFS(content, "html/index.html"))
+
     query := r.FormValue("query")
-    log.Printf("Query '%s' \n", query)
-    res := engine.Search(strings.ToLower(query))
+    language := r.FormValue("language")
+    stage := r.FormValue("stage")
+    dictionary := r.FormValue("dictionary")
+
+    res := engine.Search(strings.ToLower(query), language, stage, dictionary)
+
     if len(res) > 10 {
         res = res[:10]
     }
