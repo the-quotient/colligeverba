@@ -1,31 +1,22 @@
 # ColligeVerba
 
-ColligeVerba is a simple and blazingly fast Online-Tool that assists you while transcribing handwritten latin source texts searching latin word forms using Regular Expressions. Visit [colligeverba.jn2p.de](https://colligeverba.jn2p.de) and try it. 
+ColligeVerba is a simple Online-Tool that assists you while transcribing handwritten Latin and historical German source texts by searching for word forms using Regular Expressions.
 
-## When to Use It 
+While transcribing handwritten source texts, you may encounter words that are very difficult to read.
+Especially if the first letter is indecipherable, it is almost impossible to look for possible candidates in a standard physical or digital dictionary.
+ColligeVerba bridges the gap between transcription and dictionary lookup by letting you search using only the letters you can actually read.
 
-Transcribing handwritten latin source texts you may encounter words that are very difficult to read. Especially if the the first letter is indecipherable, it is almost impossible to look for possible candidates in a normal dictionary.
+## How to Use It
 
-## How to Use It 
+Visit [colligeverba.jn2p.de](https://colligeverba.jn2p.de). 
 
-Vist [colligeverba.jn2p.de](https://colligeverba.jn2p.de). You can enter the letters that you can read and mark the others with a question mark. If you have a suggestions for the missing letters, you can add several candidates for the question marks. The tool then returns words and also inflected forms that match the entered pattern. 
+1. **Select your language and dictionary:** You can choose between Latin and German. For German, the tool dynamically fetches a comprehensive list of historical dictionaries (like the *Grimmsches Wörterbuch*, *Mittelhochdeutsches Wörterbuch*, etc.) categorized by epoch from [woerterbuchnetz.de](https://woerterbuchnetz.de).
+2. **Enter your query:** Enter the letters that you can read and mark the unknown ones with a question mark (`?`).
+3. **Refine with candidates:** If you have a suggestion for a missing letter, you can add several possible character candidates for the question marks using the "or" button in the UI.
+4. **Search:** The tool then returns words and (momentarily only in the case of Latin) inflected forms that match the entered pattern.
 
-If at any point you are unsure whether a sign represents one or two letters you tell this to the program with two question marks.
+If at any point you are unsure whether a sign represents one or two letters, you can tell the program this by using two question marks (`??`).
 
-In order to accelerate the process of checking wether a form makes sense in the context of the source, the tool also provides some translation suggestions and a form analysis powered by [latein.me](https://latein.me). 
-
-## Remarks on the Implementation
-
-### Engine 
-
-The engine (implemented in Go) builds a regular expression from your input and matches it against a list of latin word forms. The form analysis and translation suggestions is powered by [latein.me](https://latein.me)
-
-### Form list 
-
-The basic form list is extracted from a spell check dictionary for Vim (ca. 890,000 forms). We expanded this list with the forms of the [Classical Language Toolkit](https://github.com/cltk) project corpus (now ca. 1,098,000 forms). Currently, we are working on expanding the list further with common spelling deviation of Medieval and Early Modern (Ecclesiastical) Latin. 
-
-### Web Interface  
-
-The web interface uses a combination of HTMX and Go. 
-
-
+**Exploring Results:**
+* **Latin:** To accelerate the process of checking whether a form makes sense in the context of the source, clicking a Latin result provides translation suggestions and a form analysis powered by [latein.me](https://latein.me). 
+* **German:** Clicking a German result will open a new tab taking you directly to that exact w:ord's entry in your selected dictionary on the [woertbuchnetz.de](https://woerterbuchnetz.de).
