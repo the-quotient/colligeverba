@@ -5,5 +5,3 @@ services:
       - "8080:8080"
     volumes:
       - ./data_local:/data
-    environment:
-      - DISABLE_DB=true
